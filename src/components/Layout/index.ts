@@ -1,0 +1,1 @@
+export { NewspaperLayout } from './NewspaperLayout'
