@@ -1,5 +1,6 @@
 import type { NewspaperConfig } from '../../types'
 import { ContentBlock } from '../Block'
+import { Header, Footer } from '../Header'
 
 interface NewspaperLayoutProps {
   config: NewspaperConfig
@@ -7,7 +8,7 @@ interface NewspaperLayoutProps {
 }
 
 export const NewspaperLayout = ({ config, className = '' }: NewspaperLayoutProps) => {
-  const { pageSize, blocks, style } = config
+  const { pageSize, blocks, style, header } = config
 
   const getPageSizeClass = () => {
     switch (pageSize) {
@@ -35,24 +36,19 @@ export const NewspaperLayout = ({ config, className = '' }: NewspaperLayoutProps
     <div className={`newspaper-page bg-white shadow-2xl ${getPageSizeClass()} ${className}`}
          style={getGlobalStyle()}>
       {/* 报纸边框 */}
-      <div className="h-full border-2 border-newspaper-border p-8">
-        {/* 报纸页眉 */}
-        <div className="mb-6 text-center border-b border-newspaper-border pb-4">
-          <h1 className="text-4xl font-bold text-newspaper-headline mb-2">
-            示例报纸
-          </h1>
-          <p className="text-sm text-newspaper-text">
-            {new Date().toLocaleDateString('zh-CN', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              weekday: 'long'
-            })}
-          </p>
-        </div>
+      <div className="h-full border-2 border-newspaper-border p-8 flex flex-col">
+        {/* 动态页眉 */}
+        {header && (
+          <Header
+            template={header.template}
+            newspaperName={header.newspaperName}
+            pageNumber={header.pageNumber}
+            date={header.date}
+          />
+        )}
 
         {/* 内容区块 */}
-        <div className="relative" style={{ height: 'calc(100% - 120px)' }}>
+        <div className="flex-1 relative">
           {blocks.map((block) => (
             <div
               key={block.id}
@@ -68,6 +64,17 @@ export const NewspaperLayout = ({ config, className = '' }: NewspaperLayoutProps
             </div>
           ))}
         </div>
+
+        {/* 动态页脚 */}
+        {header && (
+          <Footer
+            template={header.template}
+            newspaperName={header.newspaperName}
+            pageNumber={header.pageNumber}
+            date={header.date}
+            footerInfo={header.footerInfo}
+          />
+        )}
       </div>
     </div>
   )

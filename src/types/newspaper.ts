@@ -3,6 +3,21 @@ export interface NewspaperConfig {
   pageSize: PageSize
   blocks: Block[]
   style?: GlobalStyle
+  header?: HeaderFooterConfig
+}
+
+export interface HeaderFooterConfig {
+  newspaperName: string
+  pageNumber: string
+  date: string
+  template: {
+    headerType: 'center' | 'left-right' | 'right-left'
+    footerType: 'center' | 'left-right' | 'right-left' | 'single-column' | 'double-column' | 'simple' | 'none'
+  }
+  footerInfo?: {
+    newspaperInfo: string
+    weatherInfo: string
+  }
 }
 
 export interface Block {
